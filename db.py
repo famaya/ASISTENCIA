@@ -7,7 +7,7 @@ client = MongoClient(Config.MONGO_URI)
 # Usamos la base de datos "ava"
 db = client["ava"]
 
-# Colecciones reales en tu Atlas
-alumnas = db["alumnas"]
-asistencia = db["asistencia"]
-pagos = db["pagos"]
+# Colecciones en inglés
+students = db["students"]
+attendance = db["attendance"]
+payments = db["payments"]
