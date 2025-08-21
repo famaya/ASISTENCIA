@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ava-asistencia-pagos
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@ava.pe
+      - key: ADMIN_PASSWORD
+        value: cambia-esto

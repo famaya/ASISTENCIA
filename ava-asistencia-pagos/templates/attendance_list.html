@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h4>Asistencia – {{ date_str }} {% if category %}<small class="text-muted">({{category}})</small>{% endif %}</h4>
+<div class="mb-3">
+  <a class="btn btn-outline-primary" href="/attendance/export?category={{category}}&date={{date_str}}">Exportar CSV</a>
+</div>
+<div class="table-responsive">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Categoría</th>
+      <th>Alumna</th>
+      <th>Asistió</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it in items %}
+      <tr>
+        <td>{{ it.date }}</td>
+        <td>{{ it.category }}</td>
+        <td>{{ it.student_id }}</td>
+        <td>
+          {% if it.present %}
+            <span class="badge text-bg-success">Sí</span>
+          {% else %}
+            <span class="badge text-bg-danger">No</span>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

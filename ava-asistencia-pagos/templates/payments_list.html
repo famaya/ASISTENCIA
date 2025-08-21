@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h4>Pagos – {{ month }}</h4>
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-4">
+    <label class="form-label">Categoría</label>
+    <select class="form-select" name="category">
+      <option value="">Todas</option>
+      {% for c in categories %}
+        <option value="{{c}}" {% if category==c %}selected{% endif %}>{{c}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Mes</label>
+    <input type="month" class="form-control" name="month" value="{{month}}">
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-outline-secondary w-100">Actualizar</button>
+  </div>
+</form>
+
+<div class="table-responsive">
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Alumna</th>
+      <th>Categoría</th>
+      <th>Plan</th>
+      <th>Estado</th>
+      <th>Monto</th>
+      <th>Método</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it in items %}
+      <tr>
+        <td>{{ it.student.last_name }}, {{ it.student.first_name }}</td>
+        <td>{{ it.student.category }}</td>
+        <td>{{ it.student.plan_days }} días – S/ {{ '%.2f'|format(it.student.plan_fee or 0) }}</td>
+        <td>
+          {% if it.paid %}
+            <span class="badge text-bg-success">Al día</span>
+          {% else %}
+            <span class="badge text-bg-warning">Pendiente</span>
+          {% endif %}
+        </td>
+        <td>S/ {{ '%.2f'|format(it.amount) }}</td>
+        <td>{{ it.method }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-primary" href="/payments/new?student_id={{it.student._id}}&month={{month}}">Registrar pago</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
