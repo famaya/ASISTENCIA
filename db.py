@@ -1,10 +1,13 @@
 from pymongo import MongoClient
 from config import Config
 
+# Conexión a Mongo Atlas
 client = MongoClient(Config.MONGO_URI)
-db = client[client.get_default_database().name if client.get_default_database() else 'ava_db']
 
-users = db["users"]
-students = db["students"]
-attendance = db["attendance"]
-payments = db["payments"]
+# Usamos la base de datos "ava"
+db = client["ava"]
+
+# Colecciones reales en tu Atlas
+alumnas = db["alumnas"]
+asistencia = db["asistencia"]
+pagos = db["pagos"]
