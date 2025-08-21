@@ -3,9 +3,10 @@ from bson import ObjectId
 from db import students, attendance, payments
 from utils import month_key
 
-# -------- Alumnas --------
+
+
 def list_students(category: str | None = None):
-    q = {"deleted": {"$ne": True}}
+    q = {"$or": [{"deleted": {"$exists": False}}, {"deleted": False}]}
     if category:
         q["category"] = category
     return list(students.find(q).sort([("last_name", 1), ("first_name", 1)]))
