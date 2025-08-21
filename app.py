@@ -29,6 +29,7 @@ def index():
     total_students = len(models.list_students())
     today = datetime.today().strftime('%Y-%m-%d')
     return render_template('index.html', cats=cats, total_students=total_students, today=today)
+    
 
 # ----- Alumnas -----
 @app.get('/students')
