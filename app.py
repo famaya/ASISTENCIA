@@ -158,6 +158,17 @@ def payments_save():
     flash('Pago registrado', 'success')
     return redirect(url_for('payments_list', category=request.args.get('category'), month=month))
 
+
+@app.after_request
+def add_header(response):
+    response.cache_control.no_store = True
+    response.cache_control.no_cache = True
+    response.cache_control.must_revalidate = True
+    return response
+
+
+
+
 # ----- PWA -----
 @app.get('/manifest.json')
 def manifest():
