@@ -26,9 +26,16 @@ def require_login():
 @app.get('/')
 def index():
     cats = CATEGORIES
-    total_students = len(models.list_students())  # ya filtra activas
+    total_students = models.count_students()
+    by_category = models.count_students_by_category()
     today = datetime.today().strftime('%Y-%m-%d')
-    return render_template('index.html', cats=cats, total_students=total_students, today=today)
+    return render_template(
+        'index.html',
+        cats=cats,
+        total_students=total_students,
+        by_category=by_category,
+        today=today
+    )
     
 
 # ----- Alumnas -----
