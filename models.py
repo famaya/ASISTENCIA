@@ -3,7 +3,20 @@ from bson import ObjectId
 from db import students, attendance, payments
 from utils import month_key
 
+# -------- Totales --------
+def count_students():
+    """Cuenta todas las alumnas activas (no eliminadas)."""
+    return students.count_documents({"$or": [{"deleted": {"$exists": False}}, {"deleted": False}]})
 
+def count_students_by_category():
+    """Cuenta alumnas activas agrupadas por categoría."""
+    pipeline = [
+        {"$match": {"$or": [{"deleted": {"$exists": False}}, {"deleted": False}]}},
+        {"$group": {"_id": "$category", "count": {"$sum": 1}}},
+        {"$sort": {"_id": 1}}
+    ]
+    return list(students.aggregate(pipeline))
+    
 
 def list_students(category: str | None = None):
     q = {"$or": [{"deleted": {"$exists": False}}, {"deleted": False}]}
