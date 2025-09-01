@@ -38,6 +38,15 @@ def index():
     )
     
 
+
+# --- grupo ---
+@app.get('/grupo')
+def index():
+    
+    return render_template(
+        'grupo.html',
+        )
+
 # ----- Alumnas -----
 @app.get('/students')
 def students_list():
