@@ -17,5 +17,14 @@ app.register_blueprint(sedes_bp, url_prefix="/sedes")
 def inicio():
     return render_template("index.html")
 
+
+# ----- PWA -----
+@app.get('/manifest.json')
+def manifest():
+    return app.send_static_file('manifest.json')
+
+@app.get('/service-worker.js')
+def sw():
+    return app.send_static_file('service-worker.js')
 if __name__ == "__main__":
     app.run(debug=True)
