@@ -4,8 +4,9 @@ from routes.students import students_bp
 from routes.professors import professors_bp
 from routes.groups import groups_bp
 from routes.sedes import sedes_bp
-# Esto lo puedes poner al inicio de app.py
-app.config['VERSION'] = '1.0.0'
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 app = Flask(__name__)
 
 # Registrar Blueprints
