@@ -13,18 +13,21 @@ app.register_blueprint(professors_bp, url_prefix="/professors")
 app.register_blueprint(groups_bp, url_prefix="/groups")
 app.register_blueprint(sedes_bp, url_prefix="/sedes")
 
+
+# --- Evitar caché en todas las respuestas ---
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 @app.route("/")
 def inicio():
     return render_template("index.html")
 
 
-# ----- PWA -----
-@app.get('/manifest.json')
-def manifest():
-    return app.send_static_file('manifest.json')
 
-@app.get('/service-worker.js')
-def sw():
-    return app.send_static_file('service-worker.js')
 if __name__ == "__main__":
     app.run(debug=True)
