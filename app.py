@@ -29,7 +29,7 @@ def add_header(response):
 
 @app.route("/")
 def inicio():
-    return render_template("index2.html")
+    return render_template("index.html")
 
 
 
