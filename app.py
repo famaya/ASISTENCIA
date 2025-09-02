@@ -5,9 +5,10 @@ from routes.professors import professors_bp
 from routes.groups import groups_bp
 from routes.sedes import sedes_bp
 
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # Registrar Blueprints
 app.register_blueprint(students_bp, url_prefix="/students")
