@@ -7,39 +7,78 @@ groups_bp = Blueprint('groups', __name__, url_prefix='/groups')
 # LISTAR
 @groups_bp.route('/')
 def lista_grupos():
-    grupos1 = list(db['groups'].find())
-    return render_template('groups/lista.html', grupos=grupos1)
+    groups = list(db['groups'].find())
+    for g in groups:
+        g["profesor"] = db["professors"].find_one({"_id": g["profesor"]})
+        g["sede"] = db["sedes"].find_one({"_id": g["sede"]})
+        g["alumnas"] = list(db["students"].find({"_id": {"$in": g.get("alumnas_ids", [])}}))
+    return render_template("groups/lista.html", groups=groups)
+
 
 # AGREGAR
 @groups_bp.route("/agregar", methods=["GET", "POST"])
 def agregar_grupos():
     if request.method == "POST":
-        nuevo = {
-            "nombre": request.form["nombre"],
-            "horario": request.form["horario"],
-            "profesor_id": request.form["profesor_id"],
-            "sede_id": request.form["sede_id"],
-        }
-        db["groups"].insert_one(nuevo)
-        return redirect(url_for("groups.lista_grupos"))
-    return render_template("groups/agregar.html")
+        nombre = request.form["nombre"]
+        profesor_id = request.form["profesores"]
+        horario = request.form["horario"]
+        sede_id = request.form["sede"]
+        alumnas_ids = request.form.getlist("alumnas")
 
-# EDITAR
+        grupo = {
+            "nombre": nombre,
+            "profesor": ObjectId(profesor_id),
+            "horario": horario,
+            "sede": ObjectId(sede_id),
+            "alumnas": [ObjectId(a) for a in alumnas_ids]
+        }
+        db["groups"].insert_one(grupo)
+        return redirect(url_for("groups.lista_grupos"))
+   
+    # Obtener listas de las colecciones relacionadas
+    profesores = list(db["professors"].find())
+    sedes = list(db["sedes"].find())
+    alumnas = list(db["students"].find())
+
+    return render_template("groups/agregar.html", profesores=profesores, sedes=sedes, alumnas=alumnas)
+
+
+
+
+# --- EDITAR GRUPO ---
 @groups_bp.route("/editar/<id>", methods=["GET", "POST"])
 def editar_grupos(id):
-    groups = db["groups"].find_one({"_id": ObjectId(id)})
+    group = db["groups"].find_one({"_id": ObjectId(id)})
     if request.method == "POST":
+        nombre = request.form["nombre"]
+        profesor_id = request.form["profesor_id"]
+        sede_id = request.form["sede_id"]
+        alumnas_ids = request.form.getlist("alumnas")  # lista de checkboxes
+
         db["groups"].update_one(
             {"_id": ObjectId(id)},
             {"$set": {
-            "nombre": request.form["nombre"],
-            "horario": request.form["horario"],
-            "profesor_id": request.form["profesor_id"],
-            "sede_id": request.form["sede_id"],
+                "nombre": nombre,
+                "profesor_id": ObjectId(profesor_id),
+                "sede_id": ObjectId(sede_id),
+                "alumnas_ids": [ObjectId(a) for a in alumnas_ids]
             }}
         )
+        
         return redirect(url_for("groups.lista_grupos"))
-    return render_template("groups/editar.html", profesor=profesor)
+
+    
+    profesores = list(db["professors"].find())
+    sedes = list(db["sedes"].find())
+    alumnas = list(db["students"].find())
+    return render_template("groups/editar.html", group=group, profesores=profesores, sedes=sedes, alumnas=alumnas)
+
+
+
+
+
+
+
 
 # ELIMINAR
 @groups_bp.route("/eliminar/<id>")
