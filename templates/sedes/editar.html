@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Profesor{% endblock %}
+
+{% block content %}
+<h2>Editar Profesor</h2>
+
+<form method="POST" action="{{ url_for('professors.editar_professor', id=professor._id) }}">
+  <div class="mb-3">
+    <label for="nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control" name="nombre" value="{{ professor.nombre }}" required>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" name="email" value="{{ professor.email }}" required>
+  </div>
+  <div class="mb-3">
+    <label for="telefono" class="form-label">Teléfono</label>
+    <input type="text" class="form-control" name="telefono" value="{{ professor.telefono }}">
+  </div>
+  <button type="submit" class="btn btn-success">Actualizar</button>
+  <a href="{{ url_for('professors.lista_professors') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
