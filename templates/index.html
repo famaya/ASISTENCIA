@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1>Bienvenido al Sistema de Gestión de la Academia</h1>
+    <p class="lead">Selecciona una opción en el menú superior para comenzar.</p>
+</div>
+
+<div class="row mt-5">
+    <!-- Tarjeta Estudiantes -->
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Estudiantes</h5>
+                <p class="card-text">Lista y gestión de alumnas.</p>
+                <a href="{{ url_for('students.lista_students') }}" class="btn btn-light btn-sm">Ir a Estudiantes</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Profesores -->
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Profesores</h5>
+                <p class="card-text">Lista y gestión de profesores.</p>
+                <a href="{{ url_for('professors.lista_profesores') }}" class="btn btn-light btn-sm">Ir a Profesores</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Grupos -->
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Grupos</h5>
+                <p class="card-text">Lista y gestión de grupos.</p>
+                <a href="{{ url_for('groups.lista_grupos') }}" class="btn btn-light btn-sm">Ir a Grupos</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Sedes -->
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Sedes</h5>
+                <p class="card-text">Lista y gestión de sedes.</p>
+                <a href="{{ url_for('sedes.lista_sedes') }}" class="btn btn-light btn-sm">Ir a Sedes</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

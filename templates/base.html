@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Academia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('inicio') }}">Academia</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+                    <!-- Estudiantes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Estudiantes
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('students.lista_students') }}">Lista</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('students.agregar_students') }}">Agregar</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Profesores -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Profesores
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('professors.lista_profesores') }}">Lista</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('professors.agregar_profesor') }}">Agregar</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Grupos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Grupos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('groups.lista_grupos') }}">Lista</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('groups.agregar_grupos') }}">Agregar</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Sedes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Sedes
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('sedes.lista_sedes') }}">Lista</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('sedes.agregar_sedes') }}">Agregar</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido dinámico -->
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
