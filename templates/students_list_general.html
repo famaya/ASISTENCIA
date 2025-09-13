@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h4>Lista general de alumnas</h4>
+<table class="table table-striped">
+<tr><th>Nombre</th><th>Apellido</th><th>Categoría</th><th>Inicio</th><th>Apoderado</th><th>Nota</th><th>Activa</th></tr>
+{% for s in items %}
+<tr>
+  <td>{{ s.first_name }}</td>
+  <td>{{ s.last_name }}</td>
+  <td>{{ s.category }}</td>
+  <td>{{ s.start_date }}</td>
+  <td>{{ s.guardian }}</td>
+  <td>{{ s.notes }}</td>
+  <td>{{ 'Sí' if s.active else 'No' }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Agregar Sede</h2>
+<form method="POST">
+  <div class="mb-3">
+        <label>Direccion</label>
+        <input type="text" name="direccion" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Costo horario</label>
+        <input type="text" name="costo_horario" class="form-control" required>
+    </div>
+    
+  <button type="submit">Guardar</button>
+</form>
+{% endblock %}

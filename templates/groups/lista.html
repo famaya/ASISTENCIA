@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Grupos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Lista de Grupos</h2>
+  <a href="{{ url_for('groups.agregar_grupos') }}"class="btn btn-primary"> + Nuevo Grupo</a>
+</div>
+
+<table class="table table-striped" >
+<thead class="table-dark">
+  <tr>
+    <th>Nombre</th>
+    <th>Profesor</th>
+    <th>Horario</th>
+    <th>Sede</th>
+    <th>Alumnas</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+<tbody>
+  {% for g in groups %}
+  <tr>
+    <td>{{ g["nombre"] }}</td>
+    <td>{{ g["profesor"]["nombre"] }} {{ g["profesor"]["apellido"] }}</td>
+    <td>{{ g["horario"] }}</td>
+    <td>{{ g["sede"]["direccion"] }}</td>
+    <td>
+      {% for a in g["alumnas"] %}
+        {{ a["first_name"] }} {{ a["last_name"] }}<br>
+      {% endfor %}
+    </td>
+
+    <td>
+        <a href="{{ url_for('groups.editar_grupos', id=g["_id"]) }}" class="btn btn-sm btn-warning">Editar</a>
+        <a href="{{ url_for('groups.eliminar_grupos', id=g["_id"]) }}" class="btn btn-danger btn-sm"
+           onclick="return confirm('¿Estás seguro de que quieres eliminar a este grupo?');">
+           Eliminar</a>
+    </td>
+  </tr>
+  {% endfor %}
+ </tbody>
+</table>
+{% endblock %}m>

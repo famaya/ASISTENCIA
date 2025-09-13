@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h4>Marcar asistencia</h4>
+<form class="row g-2 mb-3" method="get" action="/attendance">
+  <div class="col-md-4">
+    <label class="form-label">Categoría</label>
+    <select class="form-select" name="category" required>
+      <option value="" disabled {% if not category %}selected{% endif %}>Elegir…</option>
+      {% for c in categories %}
+        <option value="{{c}}" {% if category==c %}selected{% endif %}>{{c}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Fecha</label>
+    <input type="date" class="form-control" name="date" value="{{date_str}}" required>
+  </div>
+  <div class="col-md-3 d-flex align-items-end">
+    <button class="btn btn-outline-secondary">Actualizar lista</button>
+  </div>
+  <div class="col-md-2 d-flex align-items-end justify-content-end">
+    {% if category %}
+      <a class="btn btn-link" href="/attendance/list?category={{category}}&date={{date_str}}">Ver lista</a>
+    {% endif %}
+  </div>
+</form>
+
+{% if not items %}
+  <div class="alert alert-info">Elige categoría para ver alumnas.</div>
+{% else %}
+<form action="/attendance/save" method="post">
+  <input type="hidden" name="category" value="{{category}}">
+  <input type="hidden" name="date" value="{{date_str}}">
+  <div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Asistió</th>
+        <th>Apellidos</th>
+        <th>Nombres</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in items %}
+        <tr>
+          <td style="width:80px">
+            <input class="form-check-input" type="checkbox" name="present_{{s._id}}">
+            <input type="hidden" name="student_id" value="{{s._id}}">
+          </td>
+          <td>{{ s.last_name }}</td>
+          <td>{{ s.first_name }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <button class="btn btn-primary">Guardar asistencia</button>
+</form>
+{% endif %}
+{% endblock %}

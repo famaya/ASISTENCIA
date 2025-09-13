@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Sede{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+ <h2>Editar Sedes</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label for="nombre" class="form-label">Dirección</label>
+    <input type="text" class="form-control" name="direccion" value="{{ sedes.direccion }}" required>
+  </div>
+  <div class="mb-3">
+    <label for="costo_horario" class="form-label">Costo_Horario</label>
+    <input type="text" class="form-control" name="costo_horario" value="{{ sedes.costo_horario }}" required>
+  </div>
+  
+  <button type="submit" class="btn btn-success">Actualizar</button>
+  <a href="{{ url_for('sedes.lista_sedes') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+</div>
+{% endblock %}

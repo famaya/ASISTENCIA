@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h4>{{ 'Editar' if item else 'Nueva' }} alumna</h4>
+<form action="/students/save" method="post" class="row g-3">
+  {% if item %}<input type="hidden" name="id" value="{{item._id}}">{% endif %}
+  <div class="col-md-6">
+    <label class="form-label">Nombres</label>
+    <input class="form-control" name="first_name" value="{{item.first_name if item else ''}}" required>
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Apellidos</label>
+    <input class="form-control" name="last_name" value="{{item.last_name if item else ''}}" required>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Categoría</label>
+    <select class="form-select" id="category" name="category" required>
+      <option value="" disabled {% if not item %}selected{% endif %}>Elegir…</option>
+      {% for c in categories %}
+        <option value="{{c}}" {% if item and item.category==c %}selected{% endif %}>{{c}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Plan</label>
+    <select class="form-select" id="plan_days" name="plan_days" required></select>
+    <div class="form-text" id="plan_fee_text"></div>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Inicio</label>
+    <input type="date" class="form-control" name="start_date" value="{{item.start_date if item else ''}}">
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Apoderado</label>
+    <input class="form-control" name="guardian" value="{{item.guardian if item else ''}}">
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Teléfono</label>
+    <input class="form-control" name="phone" value="{{item.phone if item else ''}}">
+  </div>
+  <div class="col-12">
+    <label class="form-label">Notas</label>
+    <textarea class="form-control" name="notes" rows="2">{{item.notes if item else ''}}</textarea>
+  </div>
+  <div class="col-12 d-flex gap-2">
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-secondary" href="/students">Cancelar</a>
+  </div>
+</form>
+<script>
+  const PLANS = {{ plans_json|safe }};
+  const categorySelect = document.getElementById('category');
+  const planDaysSelect = document.getElementById('plan_days');
+  const planFeeText = document.getElementById('plan_fee_text');
+
+  function refreshPlans() {
+    const cat = categorySelect.value;
+    planDaysSelect.innerHTML = '';
+    if (!PLANS[cat]) return;
+    for (const [days, fee] of Object.entries(PLANS[cat])) {
+      const opt = document.createElement('option');
+      opt.value = days;
+      opt.textContent = `${days} días – S/ ${fee}`;
+      planDaysSelect.appendChild(opt);
+    }
+    updateFeeText();
+  }
+  function updateFeeText() {
+    const cat = categorySelect.value;
+    const d = planDaysSelect.value;
+    const fee = (PLANS[cat]||{})[d];
+    planFeeText.textContent = fee ? `Mensualidad: S/ ${fee}` : '';
+  }
+  categorySelect.addEventListener('change', refreshPlans);
+  planDaysSelect.addEventListener('change', updateFeeText);
+  // init
+  refreshPlans();
+  {% if item %}
+    planDaysSelect.value = "{{item.plan_days}}";
+    updateFeeText();
+  {% endif %}
+</script>
+{% endblock %}

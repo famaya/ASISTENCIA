@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+  <h2>Pagos </h2>
+
+  <!-- Selector de mes -->
+  <form method="get" class="mb-3">
+    <label for="month">Mes:</label>
+    <select name="month" id="month" class="form-select" onchange="this.form.submit()">
+      {% for m in meses_disponibles %}
+        <option value="{{ m }}" {% if m == month %}selected{% endif %}>{{ m }}</option>
+      {% endfor %}
+    </select>
+  </form>
+
+
+
+  <!-- Resumen -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-bg-success shadow-sm">
+        <div class="card-body text-center">
+		<h5 class="fs-4"><strong>{{ payments|length }}</strong> </h5>
+		<p>pagaron ✅</p>	
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+       <div class="card text-bg-warning shadow-sm">
+          <div class="card-body text-center">
+        	<h5 class="fs-4"><strong>{{ pendientes|length }}</strong> </h5>
+		<p>Pendientes ⏳</p>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-bg-info shadow-sm">
+         <div class="card-body text-center">
+       		<h5 class="fs-4"><strong>{{ payments|length + pendientes|length }}</strong></h5>
+		<p>Confirmados 👥</p>
+         </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <!-- Tabla de pagos -->
+  <table class="table table-striped mb-5">
+    <thead class="table-dark">
+      <tr>
+        <th>Alumno</th>
+        <th>Categoría</th>
+        <th>Monto</th>
+        <th>Método</th>
+        <th>Nota</th>
+        <th>Fecha de pago</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in payments %}
+      <tr>
+        <td>{{ p.student_name }}</td>
+        <td>{{ p.category }}</td>
+        <td>S/. {{ "%.2f"|format(p.amount) }}</td>
+        <td>{{ p.method }}</td>
+        <td>{{ p.note }}</td>
+        <td>{{ p.paid_at.strftime("%Y-%m-%d %H:%M") }}</td>
+        <td>
+          <a href="{{ url_for('payments.delete_payment', id=p._id) }}" 
+             class="btn btn-sm btn-danger"
+             onclick="return confirm('¿Eliminar este pago?')">Eliminar</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7" class="text-center">No hay pagos registrados para este mes.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Tabla de pendientes -->
+  <h3>⚠️ Confirmados sin pago</h3>
+  <table class="table table-bordered">
+    <thead class="table-warning">
+      <tr>
+        <th>Alumno</th>
+        <th>Categoría</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pendientes %}
+      <tr>
+        <td>{{ p.student_name }}</td>
+        <td>{{ p.category }}</td>
+        <td>
+          <a href="{{ url_for('payments.add_payment') }}?student_id={{ p.student_id }}" 
+   class="btn btn-sm btn-success">Registrar pago</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="3" class="text-center">Todos los confirmados ya pagaron ✅</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+ 
+
+{% endblock %}

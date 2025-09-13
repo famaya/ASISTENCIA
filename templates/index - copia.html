@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center mt-4">
+    <h2>Dashboard  {{ month_name }} </h2>
+    <p class="lead">Resumen general de la academia</p>
+</div>
+
+<div class="row mt-4">
+    
+<!-- confirmados -->
+    <div class="col-md-2">
+        <div class="card text-white bg-warning  mb-3  shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-person-vcard fs-4"></i> Deportistas</h5>		
+                <p class="card-text">
+                    <h1> <strong>{{ confirmed_students|length }}</strong> </h1>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+
+<!-- pagos -->
+    <div class="col-md-2">
+        <div class="card text-white bg-success mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-cash-stack fs-4"></i> Pagaron</h5>
+		<p class="card-text">
+                    <h1> <strong>{{ payments_done }}</strong></h1>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+
+<!-- Grupos -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-collection-fill fs-4"></i> Grupos</h5>
+		<p class="card-text">
+                    <h1> <strong>{{ total_groups }}</strong></h1>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Sedes -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-building fs-4"></i> Sedes</h5>		
+                <p class="card-text">
+                    <h1> <strong>{{ total_sedes }}</strong> </h1>
+                   
+                </p>
+            </div>
+        </div>
+    </div>
+
+<!-- Profesores -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-person-badge-fill fs-4"></i> Profesores</h5>
+                <p class="card-text">
+                    <h1> <strong>{{ total_professors }}</strong></h1>
+                    
+                </p>
+            </div>
+        </div>
+    </div>    
+
+
+
+<!-- Alumnos -->
+    <div class="col-md-2">
+        <div class="card text-white bg-secondary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"> <i class="bi bi-people-fill fs-4"></i> Contactos</h5>
+                <p class="card-text">
+                    <h1> <strong>{{ total_students }}</strong></h1>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<hr>
+<div class="row mt-5">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-warning text-dark fw-bold">
+        Confirmaciones {{ month_name }}
+      </div>
+      <div class="card-body">
+        <canvas id="chartConfirmaciones"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white fw-bold">
+        Pagos {{ month_name }}
+      </div>
+      <div class="card-body">
+        <canvas id="chartPagos"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Confirmaciones
+  const ctxConfirm = document.getElementById('chartConfirmaciones');
+  new Chart(ctxConfirm, {
+    type: 'doughnut',
+    data: {
+      labels: ['Confirmados', 'No confirmados'],
+      datasets: [{
+        data: [{{ confirmed_students|length }}, {{ total_students - confirmed_students|length }}],
+        backgroundColor: ['#ffc107', '#dee2e6'],
+        borderWidth: 1
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  // Pagos
+  const ctxPagos = document.getElementById('chartPagos');
+  new Chart(ctxPagos, {
+    type: 'doughnut',
+    data: {
+      labels: ['Pagaron', 'Pendientes'],
+      datasets: [{
+        data: [{{ payments_done }}, {{ confirmed_students|length - payments_done }}],
+        backgroundColor: ['#28a745', '#dee2e6'],
+        borderWidth: 1
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+</script>
+{% endblock %}

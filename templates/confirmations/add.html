@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Confirmar Alumno</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label for="student_id" class="form-label">Seleccionar Alumno</label>
+    <select class="form-control" name="student_id" required>
+      {% for s in students %}
+      <option value="{{ s._id }}">{{ s.first_name }} {{ s.last_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-success">Confirmar</button>
+  <a href="{{ url_for('confirmations.list_confirmations') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

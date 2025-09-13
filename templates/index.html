@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center mt-4">
+    <h2>Dashboard {{ month_name }}</h2>
+    <p class="lead">Resumen general de la academia</p>
+</div>
+
+<!-- Cards -->
+<div class="row mt-4">
+    <!-- Confirmados -->
+    <div class="col-md-2 ">
+        <div class="card text-white bg-warning mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-person-vcard fs-4"></i> Deportistas</h5>
+                <h1>{{ confirmed_students|length }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagos -->
+    <div class="col-md-2 ">
+        <div class="card text-white bg-success mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-cash-stack fs-4"></i> Pagaron</h5>
+                <h1>{{ payments_done }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupos -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-collection-fill fs-4"></i> Grupos</h5>
+                <h1>{{ total_groups }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sedes -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-building fs-4"></i> Sedes</h5>
+                <h1>{{ total_sedes }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profesores -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-person-badge-fill fs-4"></i> Profesores</h5>
+                <h1>{{ total_professors }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alumnos -->
+    <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3 shadow">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="bi bi-people-fill fs-4"></i> Contactos</h5>
+                <h1>{{ total_students }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+
+<div class="row mt-2">
+  <div class="col-md-5 col-sm-12">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white fw-bold">
+        Deportistas y Pagos por Categoría - {{ month_name }}
+      </div>
+      <div class="card-body">
+        <canvas id="chartCategorias"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const categorias = {{ categorias|tojson }};
+  const labels = Object.keys(categorias);
+  const confirmados = labels.map(cat => categorias[cat].confirmados);
+  const pagaron = labels.map(cat => categorias[cat].pagaron);
+
+  new Chart(document.getElementById('chartCategorias'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Deportistas',
+          data: confirmados,
+          backgroundColor: '#ffc107'
+        },
+        {
+          label: 'Pagaron',
+          data: pagaron,
+          backgroundColor: '#28a745'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+</script>
+{% endblock %}

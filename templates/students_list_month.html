@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h4>Alumnas para {{ month }}</h4>
+<form method="post" action="{{ url_for('students_save_month') }}">
+<table class="table table-striped">
+<tr><th>Nombre</th><th>Apellido</th><th>Categoría</th><th>Matriculada</th><th>Plan</th></tr>
+{% for s in items %}
+<tr>
+  <td>{{ s.first_name }}</td>
+  <td>{{ s.last_name }}</td>
+  <td>{{ s.category }}</td>
+  <td><input type="checkbox" name="matriculada_{{ s._id }}" {% if s.matriculada %}checked{% endif %}></td>
+  <td><input type="number" name="plan_{{ s._id }}" value="{{ s.plan_fee }}"></td>
+</tr>
+{% endfor %}
+</table>
+<button class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
